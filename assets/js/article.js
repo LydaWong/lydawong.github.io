@@ -9,7 +9,7 @@ function openArticle(id) {
     <span class="modal-tag"># ${a.tag}</span>
     <h2>${escapeHtml(a.title)}</h2>
     <div class="modal-meta">创作 ${a.date} · 约 ${a.readTime}阅读${a.updatedAt ? ` · <span class="meta-updated">更新 ${a.updatedAt}</span>` : ''}</div>
-    ${a.dirty ? '<div class="dirty-notice">' + restoreSvg + '这篇文章有未发布的修改，点「发布」后所有人才能看到更新。</div>' : ''}
+    ${isOwner() && a.dirty ? '<div class="dirty-notice">' + restoreSvg + '这篇文章有未发布的修改，点「发布」后所有人才能看到更新。</div>' : ''}
     <div class="article-body">${renderArticleBody(a)}</div>
     <div class="article-share">
       <div class="share-title">${shareSvg} 分享这篇文章</div>
@@ -22,10 +22,10 @@ function openArticle(id) {
       <div class="share-note" id="shareNote">每篇文章都有独立链接，发给别人即可直接打开这篇。</div>
     </div>
     ${renderComments(a)}
-    <div class="modal-actions">
+    ${isOwner() ? `<div class="modal-actions owner-only">
       <button class="btn btn-ghost" onclick="openEditModal('${a.id}')">${editSvg} 编辑文章</button>
       <button class="btn btn-ghost danger" onclick="moveToTrash('${a.id}')">${trashSvg} 删除文章</button>
-    </div>
+    </div>` : ''}
   `;
   currentArticleId = a.id;
   bindAudioPlayers(body);

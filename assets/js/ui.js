@@ -56,5 +56,5 @@ function setupProgress() {
 
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeModal(); closeWriteModal(); closePublishModal(); closeTrashModal(); }
+  if (e.key === 'Escape') { closeModal(); closeWriteModal(); closePublishModal(); closeTrashModal(); closeAuthModal(); }
 });

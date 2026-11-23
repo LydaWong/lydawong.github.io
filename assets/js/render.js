@@ -14,10 +14,10 @@ function renderArticles() {
       <div class="post-cover cover-${a.tag}">
         <span class="post-index">${String(i + 1).padStart(2, '0')}</span>
         <span class="post-icon">${escapeHtml(a.emoji)}</span>
-        <div class="post-actions">
+        ${isOwner() ? `<div class="post-actions owner-only">
           <button class="post-action-btn edit" title="编辑文章" onclick="event.stopPropagation(); openEditModal('${a.id}')">${editSvg}</button>
           <button class="post-action-btn delete" title="删除到回收站" onclick="event.stopPropagation(); moveToTrash('${a.id}')">${trashSvg}</button>
-        </div>
+        </div>` : ''}
       </div>
       <div class="post-body">
         <div class="post-top">

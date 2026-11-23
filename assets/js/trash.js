@@ -11,6 +11,7 @@ function locateArticle(id) {
 
 // 删除 → 移入回收站
 function moveToTrash(id) {
+  if (!requireOwner()) return;
   const { inUser, inOnline, article } = locateArticle(id);
   if (!article) { showToast('文章不存在'); return; }
   if (!confirm('删除「' + article.title + '」？\n文章会进入回收站，保留 30 天，期间可恢复。')) return;
@@ -37,6 +38,7 @@ function moveToTrash(id) {
 
 // 恢复文章
 function restoreArticle(id) {
+  if (!requireOwner()) return;
   const { inUser, inOnline } = locateArticle(id);
   if (inUser < 0 && inOnline < 0) { showToast('文章不存在'); return; }
   if (inUser >= 0) delete userArticles[inUser].deletedAt;
@@ -59,6 +61,7 @@ function restoreArticle(id) {
 
 // 彻底销毁单篇
 function destroyArticle(id) {
+  if (!requireOwner()) return;
   const { inUser, inOnline, article } = locateArticle(id);
   if (!article) { showToast('文章不存在'); return; }
   if (!confirm('彻底销毁「' + article.title + '」？\n此操作不可恢复！')) return;
@@ -80,6 +83,7 @@ function destroyArticle(id) {
 
 // 清理超过 30 天的回收站文章（每次 recompose 调用）
 function purgeExpired() {
+  if (!isOwner()) return;           // 访客不参与回收站清理，也不触发线上同步
   const now = Date.now();
   let changedOnline = false;
   const before = onlineArticles.length;
@@ -97,6 +101,7 @@ function purgeExpired() {
 
 // 打开回收站
 function openTrashModal() {
+  if (!requireOwner()) return;
   renderTrash();
   document.getElementById('trashModal').classList.add('show');
   document.body.style.overflow = 'hidden';
@@ -153,6 +158,7 @@ function updateTrashUI() {
 
 // 清空回收站
 function emptyTrash() {
+  if (!requireOwner()) return;
   const count = allArticles.filter(isTrashed).length;
   if (!count) { showToast('回收站已是空的'); return; }
   if (!confirm('确定清空回收站吗？\n这 ' + count + ' 篇文章将被彻底销毁，无法恢复！')) return;

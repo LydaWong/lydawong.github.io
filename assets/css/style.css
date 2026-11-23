@@ -819,3 +819,35 @@ img, svg { display: block; }
   figure, img { break-inside: avoid; }
   a { color: #1C1B19 !important; text-decoration: none; }
 }
+
+/* ===== 权限：访客只读，博主可写 ===== */
+/* 默认（body 没有 .role-owner）隐藏一切写作入口；解锁后才放出 */
+body:not(.role-owner) .owner-only { display: none !important; }
+body.role-owner .guest-only { display: none !important; }
+
+/* 页脚博主入口：访客几乎注意不到，博主知道在哪 */
+.owner-entry {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; margin-left: 8px; padding: 0;
+  border: none; border-radius: 8px; background: transparent;
+  color: var(--muted); opacity: .45; cursor: pointer; vertical-align: middle;
+  transition: opacity .2s, color .2s, background .2s;
+}
+.owner-entry svg { width: 14px; height: 14px; }
+.owner-entry:hover { opacity: 1; color: var(--accent); background: var(--accent-soft); }
+.owner-entry.is-unlocked { opacity: 1; color: var(--accent); }
+
+/* 博主入口弹窗 */
+.auth-dialog { max-width: 520px; }
+.auth-panel { display: flex; flex-direction: column; gap: 16px; }
+.auth-hint { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.85; }
+.auth-hint b { color: var(--ink-soft); font-weight: 600; }
+.auth-submit { align-self: flex-start; }
+.auth-ok {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 16px; border-radius: 12px;
+  background: var(--accent-soft); color: var(--accent);
+  font-size: 14.5px; font-weight: 600;
+}
+.auth-ok svg { width: 18px; height: 18px; flex: 0 0 auto; }
+.auth-actions { display: flex; gap: 12px; flex-wrap: wrap; }

@@ -72,7 +72,10 @@ function applyBlocks(a, blocks) {
 // 合并数据并清理过期回收站
 function recompose() {
   purgeExpired();
-  allArticles = dedupe([...userArticles, ...onlineArticles]);
+  // posts.json 还没加载完时先用内置文章兜底，避免首屏空白
+  const online = onlineArticles.length ? onlineArticles : defaultArticles;
+  // 访客只看到线上已发布的文章：本机草稿、未发布的改动只属于博主本人
+  allArticles = dedupe(isOwner() ? [...userArticles, ...online] : [...online]);
   renderArticles();
   updateStats();
   updatePublishUI();
@@ -118,6 +121,7 @@ function base64ToUtf8(b64) {
 // ===== 同步到 GitHub =====
 // 通用：把当前线上文章提交到 GitHub
 async function syncToGitHub(message) {
+  if (!isOwner()) return false;      // 仅博主身份可写入仓库
   const cfg = getConfig();
   if (!cfg.owner || !cfg.repo || !cfg.token) return false;
   const api = 'https://api.github.com/repos/' + encodeURIComponent(cfg.owner) + '/' + encodeURIComponent(cfg.repo) + '/contents/posts.json';

@@ -156,6 +156,7 @@ function setWriteMode(mode) {
 }
 
 function openWriteModal() {
+  if (!requireOwner()) return;
   editingId = null;
   setWriteMode('new');
   document.getElementById('writeForm').reset();
@@ -165,6 +166,7 @@ function openWriteModal() {
   showWriteModal();
 }
 function openEditModal(id) {
+  if (!requireOwner()) return;
   const a = allArticles.find(x => String(x.id) === String(id) && !isTrashed(x));
   if (!a) { showToast('文章不存在'); return; }
   editingId = String(id);
@@ -194,6 +196,7 @@ function closeWriteModal() {
 // ===== 保存文章（新建 / 编辑）=====
 function saveArticle(e) {
   e.preventDefault();
+  if (!requireOwner()) return false;
   const title = document.getElementById('wTitle').value.trim();
   const tag = document.getElementById('wTag').value;
   const emoji = document.getElementById('wEmoji').value.trim() || '✎';

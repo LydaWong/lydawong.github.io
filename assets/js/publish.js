@@ -11,6 +11,7 @@ function readConfigForm() {
 }
 
 function openPublishModal() {
+  if (!requireOwner()) return;
   const cfg = getConfig();
   document.getElementById('cfgOwner').value = cfg.owner || '';
   document.getElementById('cfgRepo').value = cfg.repo || '';
@@ -30,6 +31,7 @@ function closePublishModal() {
   document.body.style.overflow = '';
 }
 function editConfig() {
+  if (!requireOwner()) return;
   document.getElementById('publishConfig').style.display = 'flex';
   document.getElementById('publishReady').style.display = 'none';
 }
@@ -70,6 +72,7 @@ function setPublishing(on) {
 // ===== 核心：发布本地文章到 GitHub =====
 // ===== 核心：发布本地文章到 GitHub =====
 async function doPublish() {
+  if (!requireOwner()) return;
   const cfg = readConfigForm();
   if (!cfg.owner || !cfg.repo || !cfg.token) {
     showStatus('请填写 GitHub 用户名、仓库名和 Token（<a href="PUBLISH_GUIDE.md" target="_blank" style="text-decoration:underline">如何获取？</a>）', 'error');
