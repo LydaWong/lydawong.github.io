@@ -107,7 +107,7 @@ function shareToWeibo() {
   const a = allArticles.find(x => String(x.id) === String(currentArticleId));
   if (!a) return;
   const url = postUrl(a.id);
-  const title = (a.title || '我的博客') + ' · 青禾记';
+  const title = (a.title || '我的博客') + ' · 杂记';
   const weibo = 'https://service.weibo.com/share/share.php?url=' + encodeURIComponent(url)
     + '&title=' + encodeURIComponent(title);
   window.open(weibo, '_blank', 'noopener,noreferrer,width=680,height=520');
@@ -212,7 +212,7 @@ function downloadPoster() {
   if (!img.dataset.url) return;
   const a = document.createElement('a');
   a.href = img.dataset.url;
-  a.download = '青禾记-分享海报.png';
+  a.download = '杂记-分享海报.png';
   document.body.appendChild(a); a.click(); a.remove();
   showToast('海报已保存');
 }
